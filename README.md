@@ -15,11 +15,11 @@ CLI tool for managing custom emulated devices on Chrome
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g vibranium
+$ npm install -g @pittankopta/vibranium
 $ vibranium COMMAND
 running command...
 $ vibranium (-v|--version|version)
-vibranium/1.0.0-alpha.1 darwin-x64 node-v12.13.1
+@pittankopta/vibranium/1.0.0-alpha.1 darwin-x64 node-v12.13.1
 $ vibranium --help [COMMAND]
 USAGE
   $ vibranium COMMAND
