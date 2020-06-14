@@ -19,7 +19,7 @@ $ npm install -g @pittankopta/vibranium
 $ vibranium COMMAND
 running command...
 $ vibranium (-v|--version|version)
-@pittankopta/vibranium/1.0.0-alpha.2 darwin-x64 node-v12.13.1
+@pittankopta/vibranium/1.0.0-alpha.3 darwin-x64 node-v12.13.1
 $ vibranium --help [COMMAND]
 USAGE
   $ vibranium COMMAND
@@ -28,62 +28,42 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`vibranium add [FILE]`](#vibranium-add-file)
+* [`vibranium add FILE`](#vibranium-add-file)
 * [`vibranium export [FILE]`](#vibranium-export-file)
-* [`vibranium hello [FILE]`](#vibranium-hello-file)
 * [`vibranium help [COMMAND]`](#vibranium-help-command)
 
-## `vibranium add [FILE]`
+## `vibranium add FILE`
 
-describe the command here
+Add custom emulated devices from a JSON config file.
 
 ```
 USAGE
-  $ vibranium add [FILE]
+  $ vibranium add FILE
 
 OPTIONS
+  -b, --browser=browser  Browser
   -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -h, --help             show CLI help
+  -r, --replace          Replace all your existing emulated devices inside Chrome.
 ```
 
-_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.2/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.3/src/commands/add.ts)_
 
 ## `vibranium export [FILE]`
 
-describe the command here
+Export custom virtual device list from your Chrome browser.
 
 ```
 USAGE
   $ vibranium export [FILE]
 
 OPTIONS
+  -b, --browser=browser  Browser
   -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -h, --help             show CLI help
 ```
 
-_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.2/src/commands/export.ts)_
-
-## `vibranium hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ vibranium hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ vibranium hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.2/src/commands/hello.ts)_
+_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.3/src/commands/export.ts)_
 
 ## `vibranium help [COMMAND]`
 
