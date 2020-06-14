@@ -19,7 +19,7 @@ $ npm install -g vibranium
 $ vibranium COMMAND
 running command...
 $ vibranium (-v|--version|version)
-vibranium/1.0.0-beta.1 darwin-x64 node-v12.13.1
+vibranium/1.0.0-alpha.1 darwin-x64 node-v12.13.1
 $ vibranium --help [COMMAND]
 USAGE
   $ vibranium COMMAND
@@ -49,7 +49,7 @@ EXAMPLE
   hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-beta.1/src/commands/hello.ts)_
+_See code: [src/commands/hello.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.1/src/commands/hello.ts)_
 
 ## `vibranium help [COMMAND]`
 
