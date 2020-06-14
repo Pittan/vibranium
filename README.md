@@ -1,7 +1,8 @@
 vibranium
 =========
 
-CLI tool for managing custom emulated devices on Chrome
+CLI tool for managing custom emulated devices on Chrome  
+**This is a beta version. Stable version is [here](https://github.com/Pittan/vibranium-legacy). **
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/vibranium.svg)](https://npmjs.org/package/vibranium)
@@ -15,7 +16,7 @@ CLI tool for managing custom emulated devices on Chrome
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g @pittankopta/vibranium
+$ npm install -g @pittankopta/vibranium@beta
 $ vibranium COMMAND
 running command...
 $ vibranium (-v|--version|version)
@@ -26,6 +27,14 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+
+# Roadmap
+- [ ] 💚 Add test code
+- [ ] 🤖 Add integration with CircleCI
+- [ ] 💻 Test with Windows/Linux
+- [ ] ✨ Add nice documentation site
+- [ ] 👀 Add support for other Chromium-based browsers (e.g. Edge) 
+
 # Commands
 <!-- commands -->
 * [`vibranium add FILE`](#vibranium-add-file)
