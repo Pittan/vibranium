@@ -13,6 +13,7 @@
     "@oclif/plugin-help": "^3",
     "chrome-profile-list": "^1.1.0",
     "find-process": "^1.4.3",
+    "inquirer": "^7.1.0",
     "json-beautify": "^1.1.1",
     "tslib": "^1"
   },
