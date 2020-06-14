@@ -28,10 +28,18 @@ export default class Export extends Command {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    force: flags.boolean({ char: 'f' }),
-    browser: flags.string({ char: 'b', description: 'Browser' })
-    // profile: flags.string({ char: 'p', description: 'Profile name' })
+    force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
+    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium)', default: 'chrome' })
   }
+
+  static examples = [
+    `- To export your custom emulated device settings, simply type:
+    $ vibranium export`,
+    `- You can specify a directory/name for the output file with:
+    $ vibranium export ./path/to/the/config.json`,
+    `- If you want to export settings from Chrome Canary, type:
+    $ vibranium export --browser chrome-canary`
+  ]
 
   static args = [{ name: 'file' }]
 

@@ -14,10 +14,20 @@ export default class Add extends Command {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    force: flags.boolean({ char: 'f' }),
-    browser: flags.string({ char: 'b', description: 'Browser' }),
+    force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
+    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium)', default: 'chrome' }),
     replace: flags.boolean({ char: 'r', description: 'Replace all your existing emulated devices inside Chrome.' }),
   }
+
+  static examples = [
+    `- To add a custom device to your browser, simply type:
+    $ vibranium add vibranium.json
+    $ vibranium add path/to/the/config.json`,
+    `- If you want to swap all the devices with your config, type:
+    $ vibranium add vibranium.json --replace`,
+    `- If you want to add settings to Chrome Canary, type:
+    $ vibranium add --browser chrome-canary`
+  ]
 
   static args = [{ name: 'file', required: true }]
 
