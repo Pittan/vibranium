@@ -596,6 +596,13 @@ chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
   integrity sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==
 
+chrome-profile-list@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/chrome-profile-list/-/chrome-profile-list-1.1.0.tgz#bee989dbae8121e61570158b6e20fa2760f4f725"
+  integrity sha512-tQc61qEXluJjaVT9ol4oDSa90bqalV+Rk1GVRS5o4X5U79Gj763Le1+7oD+fHflf3RIBzzeST80T1tieerpk2g==
+  dependencies:
+    phylo "^1.0.0-rc.3"
+
 clean-stack@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-1.3.0.tgz#9e821501ae979986c46b1d66d2d432db2fd4ae31"
@@ -1735,6 +1742,11 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
+json5@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
+  integrity sha1-Hq3nrMASA0rYTiOWdn6tn6VJWCE=
+
 json5@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
@@ -2263,6 +2275,17 @@ pathval@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.0.tgz#b942e6d4bde653005ef6b71361def8727d0645e0"
   integrity sha1-uULm1L3mUwBe9rcTYd74cn0GReA=
+
+phylo@^1.0.0-rc.3:
+  version "1.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/phylo/-/phylo-1.0.0-rc.4.tgz#14a3ca43d776886951e9964d8b4eb7518fa79b61"
+  integrity sha512-iZGYFYdq+m4zfubH2wpsOzRCQcugZC6tA3Bwf+2Arh5S40SrBZDs+9B/lcTWp8rKiwNt/2B9z7vQK2GKGSXKuw==
+  dependencies:
+    json5 "^0.5.1"
+    mkdirp "^0.5.1"
+    rimraf "^2.6.2"
+    tmp "0.0.33"
+    which "^1.3.0"
 
 picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"
@@ -2811,7 +2834,7 @@ through@^2.3.6:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-tmp@^0.0.33:
+tmp@0.0.33, tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
   integrity sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==
