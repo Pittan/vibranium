@@ -43,6 +43,6 @@ export default class Export extends Command {
     const filepath = await getValidPath(args.file)
     const result = await writeVibraniumPreferences(devices, filepath, flags.force)
     if (!result) { return }
-    this.log(`Custom emulated device list successfully exported on ${args.file}`)
+    this.log(`Custom emulated device list successfully exported on ${filepath}`)
   }
 }
