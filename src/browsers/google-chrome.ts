@@ -14,6 +14,18 @@ export interface ChromeProfile {
 interface ScreenDimension { width: number, height: number }
 interface Insets { top: number, bottom: number, left: number, right: number }
 
+export const CHROME_VARIATIONS = {
+  CHROME: 0,
+  CHROME_CANARY: 1,
+  CHROMIUM: 2
+}
+export type ChromeVariations = typeof CHROME_VARIATIONS[keyof typeof CHROME_VARIATIONS]
+const BROWSER_PROCESS_NAME = [
+  'Google Chrome',
+  'Google Chrome Canary',
+  'Chromium'
+]
+
 export interface CustomEmulatedDevice {
   title: string
   type: string
@@ -45,6 +57,9 @@ export class ChromePreference {
   async openConfiguration (path: string): Promise<GoogleChromeConfig> {
     const preferencePath = Path.join(path, 'Preferences')
     return await openJson<GoogleChromeConfig>(preferencePath).then(async (data) => {
+      if (!data.devtools) {
+        throw Error('You have to open DevTools at least once.')
+      }
       const backupFilePath = `${path}.backup`
       await writeConfiguration(data, backupFilePath)
       return data
@@ -56,19 +71,37 @@ export class ChromePreference {
     return await writeConfiguration(config, preferencePath)
   }
 
-  async isLaunching (): Promise<boolean> {
+  async isLaunching (name: string = ''): Promise<boolean> {
+    const browser = this.getBrowser(name)
+    const processName = BROWSER_PROCESS_NAME[browser]
     return await new Promise(resolve => {
-      find('name', 'Google Chrome')
+      find('name', processName)
         .then((list: any[]) => {
-          resolve(list.length > 0)
+          resolve(list.filter(i => i.name === processName).length > 0)
         }, (err: any) => {
           throw new Error(err)
         })
     })
   }
 
-  getProfileList (): ChromeProfile[] {
-    return ChromeProfiles()
+  getProfileList (name: string = ''): ChromeProfile[] {
+    const browser = this.getBrowser(name)
+    try {
+      return ChromeProfiles(browser)
+    } catch (e) {
+      if (e.code === 'ENOENT') {
+        throw Error('The browser is not installed!')
+      }
+    }
+    return []
+  }
+
+  getBrowser (name: string = ''): ChromeVariations {
+    const str = name.toLowerCase().replace(/\s|-|_/g, '').replace('google', '').replace(/^(_)/, '')
+    if (str === 'chromium') { return CHROME_VARIATIONS.CHROMIUM }
+    if (str === 'chromecanary') { return CHROME_VARIATIONS.CHROME_CANARY }
+    if (str === 'chrome') { return CHROME_VARIATIONS.CHROME }
+    return CHROME_VARIATIONS.CHROME
   }
 
   getCustomEmulatedDeviceList (config: GoogleChromeConfig): CustomEmulatedDevice[] {

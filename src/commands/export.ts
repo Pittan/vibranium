@@ -1,5 +1,7 @@
 import { Command, flags } from '@oclif/command'
-import { ChromePreference } from '../browsers/google-chrome'
+import {
+  ChromePreference,
+} from '../browsers/google-chrome'
 import {
   chooseProfile,
   getValidPath,
@@ -26,9 +28,9 @@ export default class Export extends Command {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    force: flags.boolean({ char: 'f' })
+    force: flags.boolean({ char: 'f' }),
+    browser: flags.string({ char: 'b', description: 'Browser' })
     // profile: flags.string({ char: 'p', description: 'Profile name' })
-    // browser: flags.string({ char: 'b', description: 'Browser' }) // will be available soon
   }
 
   static args = [{ name: 'file' }]
@@ -36,7 +38,7 @@ export default class Export extends Command {
   async run (): Promise<void> {
     const { args, flags } = this.parse(Export)
     const browserPreference = new ChromePreference()
-    const profiles = browserPreference.getProfileList()
+    const profiles = browserPreference.getProfileList(flags.browser)
     const profile = await chooseProfile(profiles, 'export')
     const configuration = await browserPreference.openConfiguration(profile.profileDirPath)
     const devices = browserPreference.getCustomEmulatedDeviceList(configuration)

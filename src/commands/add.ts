@@ -5,7 +5,7 @@ import {
 } from '../browsers/google-chrome'
 import {
   chooseProfile,
-  openJson, writeConfiguration,
+  openJson
 } from '../utils'
 import inquirer from 'inquirer'
 
@@ -15,6 +15,7 @@ export default class Add extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     force: flags.boolean({ char: 'f' }),
+    browser: flags.string({ char: 'b', description: 'Browser' }),
     replace: flags.boolean({ char: 'r', description: 'Replace all your existing emulated devices inside Chrome.' }),
   }
 
@@ -24,13 +25,13 @@ export default class Add extends Command {
     const { args, flags } = this.parse(Add)
 
     const browserPreference = new ChromePreference()
-    const isLaunching = await browserPreference.isLaunching()
+    const isLaunching = await browserPreference.isLaunching(flags.browser)
     if (isLaunching && !flags.force) {
       this.error('Chrome must be closed. use --force to run anyway.')
       return
     }
 
-    const profiles = browserPreference.getProfileList()
+    const profiles = browserPreference.getProfileList(flags.browser)
     const profile = await chooseProfile(profiles, 'add device(s)')
     const configuration = await browserPreference.openConfiguration(profile.profileDirPath)
     const currentDevices = browserPreference.getCustomEmulatedDeviceList(configuration)
@@ -55,6 +56,6 @@ export default class Add extends Command {
       })
     }
     const newConfiguration = await browserPreference.setCustomEmulatedDeviceList(configuration, list)
-    await writeConfiguration(newConfiguration, profile.profileDirPath)
+    await browserPreference.saveConfiguration(newConfiguration, profile.profileDirPath)
   }
 }
