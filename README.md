@@ -19,7 +19,7 @@ $ npm install -g @pittankopta/vibranium
 $ vibranium COMMAND
 running command...
 $ vibranium (-v|--version|version)
-@pittankopta/vibranium/1.0.0-alpha.1 darwin-x64 node-v12.13.1
+@pittankopta/vibranium/1.0.0-alpha.2 darwin-x64 node-v12.13.1
 $ vibranium --help [COMMAND]
 USAGE
   $ vibranium COMMAND
@@ -47,7 +47,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.1/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.2/src/commands/add.ts)_
 
 ## `vibranium export [FILE]`
 
@@ -63,7 +63,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.1/src/commands/export.ts)_
+_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.2/src/commands/export.ts)_
 
 ## `vibranium hello [FILE]`
 
@@ -83,7 +83,7 @@ EXAMPLE
   hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.1/src/commands/hello.ts)_
+_See code: [src/commands/hello.ts](https://github.com/Pittan/vibranium/blob/v1.0.0-alpha.2/src/commands/hello.ts)_
 
 ## `vibranium help [COMMAND]`
 

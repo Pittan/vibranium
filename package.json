@@ -1,7 +1,7 @@
 {
   "name": "@pittankopta/vibranium",
   "description": "CLI tool for managing custom emulated devices on Chrome",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "author": "Pittan @Pittan",
   "bin": {
     "vibranium": "./bin/run"
