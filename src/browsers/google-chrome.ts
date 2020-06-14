@@ -2,6 +2,7 @@
 import ChromeProfiles from 'chrome-profile-list'
 import { openJson, writeConfiguration } from '../utils'
 import * as Path from 'path'
+import find from 'find-process'
 
 export interface ChromeProfile {
   displayName: string
@@ -53,6 +54,17 @@ export class ChromePreference {
   async saveConfiguration (config: GoogleChromeConfig, path: string): Promise<void> {
     const preferencePath = Path.join(path, 'Preferences')
     return await writeConfiguration(config, preferencePath)
+  }
+
+  async isLaunching (): Promise<boolean> {
+    return await new Promise(resolve => {
+      find('name', 'Google Chrome')
+        .then((list: any[]) => {
+          resolve(list.length > 0)
+        }, (err: any) => {
+          throw new Error(err)
+        })
+    })
   }
 
   getProfileList (): ChromeProfile[] {
