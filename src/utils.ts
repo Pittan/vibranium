@@ -128,6 +128,6 @@ export async function chooseProfile (profiles: ChromeProfile[], action: string):
     message: `Choose a profile you want to ${action}.`,
     choices: profiles.map(p => p.displayName)
   }]).then((answer: { profile: string }) => {
-    return profiles.find(p => p.displayName === answer.profile)
+    return profiles.find(p => p.displayName === answer.profile) ?? profiles[0]
   })
 }
