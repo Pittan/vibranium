@@ -10,9 +10,6 @@ CLI for managing custom emulated devices on Chromium-based browsers.
 <!-- toc -->
 * [🤔 What's this?](#-whats-this)
 * [🚀 Getting started](#-getting-started)
-* [Install globally](#install-globally)
-* [Install locally](#install-locally)
-* [...or](#or)
 * [✨Features](#features)
 * [✅ OS / Browser support](#-os--browser-support)
 * [🗺️ Roadmap](#️-roadmap)
