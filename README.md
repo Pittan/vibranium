@@ -15,6 +15,11 @@ CLI tool for managing custom emulated devices on Chrome
 * [Commands](#commands)
 <!-- tocstop -->
 # Usage
+```
+$ npx @pittankopta/vibranium@beta export
+$ npx @pittankopta/vibranium@beta export --browser chrome-canary
+$ npx @pittankopta/vibranium@beta add vibranium.json
+```
 <!-- usage -->
 ```sh-session
 $ npm install -g @pittankopta/vibranium
