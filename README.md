@@ -21,8 +21,8 @@ CLI for managing custom emulated devices on Chromium-based browsers.
 **Vibranium is a CLI that allows you to import/export custom device emulator settings in Chrome DevTools.**
 If you use custom device emulator feature in Chrome DevTools, you might feel this is pretty handy.  Especially if you are a frontend-developer and dealing with WebView using _custom user agent_ , you're gonna love it!
 
-When you are migrating to a new computer, vibranium can help you!  
-And when you want to share your custom device emulator settings with your colleagues, vibranium can help with that situation, too!  
+If you are migrating to a new computer, vibranium can help you!  
+If you want to share your custom device emulator settings with your colleagues, vibranium can help with that situation, too!  
 
 # 🚀 Getting started
 You can simply use this with typing:
