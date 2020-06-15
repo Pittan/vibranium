@@ -62,7 +62,7 @@ Profile feature is supported, so you can choose a profile to add custom device s
 
 ```
 $ npx @pittankopta/vibranium@beta add vibranium.json
-$ npx @pittankopta/vibranium@beta add vibranium.json  --browser chrome-canary
+$ npx @pittankopta/vibranium@beta add vibranium.json --browser chrome-canary
 ```
 
 # ✅ OS / Browser support
@@ -71,12 +71,14 @@ You can select target browser using `--browser` command.
 Available option is `chrome` `chrome-canary` `chromium`. (default is `chrome`.)
 If your favorite browser is not listed below, feel free to contribute!
 
+
 |  | macOS | Linux | Windows |
-| ---: | :---: | :---: | :---: | :---: |
+| ---: | :---: | :---: | :---: |
 | Chrome | ✅ | 🏁 | ✅ |
 | Chrome Canary | ✅ | 🏁 | ✅ |
 | Chromium | ✅ | 🏁 | ✅ |
 | Edge(Chromium based) | - | - | - |
+
 
 - ✅: Supported / Tested  
 - 🏁: Just implemented (Not tested)  
