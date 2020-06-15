@@ -3,9 +3,9 @@ vibranium
 CLI for managing custom emulated devices on Chromium-based browsers.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/vibranium.svg)](https://npmjs.org/package/vibranium)
-[![Downloads/week](https://img.shields.io/npm/dw/vibranium.svg)](https://npmjs.org/package/vibranium)
-[![License](https://img.shields.io/npm/l/vibranium.svg)](https://github.com/Pittan/vibranium/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/@pittankopta/vibranium.svg)](https://npmjs.org/package/@pittankopta/vibranium)
+[![Downloads/week](https://img.shields.io/npm/dw/@pittankopta/vibranium.svg)](https://npmjs.org/package/@pittankopta/vibranium)
+[![License](https://img.shields.io/npm/l/@pittankopta/vibranium.svg)](https://github.com/Pittan/vibranium/blob/master/package.json)
 
 <!-- toc -->
 * [🤔 What's this?](#-whats-this)
