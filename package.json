@@ -1,6 +1,6 @@
 {
   "name": "@pittankopta/vibranium",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI for managing custom emulated devices on Chromium-based browsers.",
   "author": "Pittan @Pittan",
   "bin": {
