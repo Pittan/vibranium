@@ -35,6 +35,7 @@
     "globby": "^10",
     "mocha": "8",
     "nyc": "^14",
+    "standard-version": "^9.3.0",
     "ts-node": "^8",
     "typescript": "^3.3"
   },
@@ -66,7 +67,8 @@
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "release": "standard-version"
   },
   "types": "lib/index.d.ts"
 }
