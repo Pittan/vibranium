@@ -18,7 +18,7 @@ CLI for managing custom emulated devices on Chromium-based browsers.
 <!-- tocstop -->
 
 # 🤔 What's this?
-**Vibranium is a CLI that allows you to import/export custom device emulator settings in Chrome DevTools.**
+**Vibranium is a CLI that allows you to import/export custom device emulator settings in Chrome(or other Chromium-based browser) DevTools.**
 If you use custom device emulator feature in Chrome DevTools, you might feel this is pretty handy.  Especially if you are a frontend-developer and dealing with WebView using _custom user agent_ , you're gonna love it!
 
 If you are migrating to a new computer, vibranium can help you!  
@@ -68,7 +68,7 @@ $ npx @pittankopta/vibranium@beta add vibranium.json --browser chrome-canary
 # ✅ OS / Browser support
 
 You can select target browser using `--browser` command.  
-Available option is `chrome` `chrome-canary` `chromium`. (default is `chrome`.)
+Available option is `chrome` `chrome-canary` `chromium` `edge` `edge-beta` `edge-dev` `edge-canary`. (default is `chrome`.)
 If your favorite browser is not listed below, feel free to contribute!
 
 
@@ -77,7 +77,10 @@ If your favorite browser is not listed below, feel free to contribute!
 | Chrome | ✅ | 🏁 | ✅ |
 | Chrome Canary | ✅ | 🏁 | ✅ |
 | Chromium | ✅ | 🏁 | ✅ |
-| Edge(Chromium based) | - | - | - |
+| Edge(Chromium based) | ✅ | - | 🏁 |
+| Edge Beta(Chromium based) | ✅ | 🏁 | 🏁 |
+| Edge Dev(Chromium based) | ✅ | 🏁 | 🏁 |
+| Edge Canary(Chromium based) | ✅ | - | 🏁 |
 
 
 - ✅: Supported / Tested  
@@ -89,7 +92,7 @@ If your favorite browser is not listed below, feel free to contribute!
 - [ ] 🤖 Add integration with CircleCI
 - [ ] 🐧 Test with Linux
 - [ ] ✨ Add nice documentation site
-- [ ] 👀 Add support for other Chromium-based browsers (e.g. Edge) 
+- [x] 👀 Add support for other Chromium-based browsers (e.g. Edge) 
 
 # 🤖 Commands
 <!-- commands -->
