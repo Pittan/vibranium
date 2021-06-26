@@ -2,7 +2,7 @@ import { Command, flags } from '@oclif/command'
 import {
   ChromePreference,
   CustomEmulatedDevice
-} from '../browsers/google-chrome'
+} from '../browsers/chromium-based-browsers'
 import {
   chooseProfile,
   openJson
