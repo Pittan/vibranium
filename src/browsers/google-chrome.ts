@@ -1,5 +1,5 @@
 // @ts-expect-error
-import ChromeProfiles from 'chrome-profile-list'
+import ChromeProfiles from 'chromium-profile-list'
 import { openJson, writeConfiguration } from '../utils'
 import * as Path from 'path'
 import find from 'find-process'
