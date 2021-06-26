@@ -109,7 +109,7 @@ USAGE
   $ vibranium add FILE
 
 OPTIONS
-  -b, --browser=browser  [default: chrome] Specify a browser (e.g. chrome-canary, chromium)
+  -b, --browser=browser  [default: chrome] Specify a browser (e.g. chrome-canary, chromium, edge)
   -f, --force            Skip confirm when overwriting
   -h, --help             show CLI help
   -r, --replace          Replace all your existing emulated devices inside Chrome.
@@ -124,18 +124,18 @@ EXAMPLES
        $ vibranium add --browser chrome-canary
 ```
 
-_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.0.1/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.1.0-alpha.1/src/commands/add.ts)_
 
 ## `vibranium export [FILE]`
 
-Export custom virtual device list from your Chrome browser.
+Export custom virtual device list from your Chromium-based browser.
 
 ```
 USAGE
   $ vibranium export [FILE]
 
 OPTIONS
-  -b, --browser=browser  [default: chrome] Specify a browser (e.g. chrome-canary, chromium)
+  -b, --browser=browser  [default: chrome] Specify a browser (e.g. chrome-canary, chromium, edge)
   -f, --force            Skip confirm when overwriting
   -h, --help             show CLI help
 
@@ -148,7 +148,7 @@ EXAMPLES
        $ vibranium export --browser chrome-canary
 ```
 
-_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.0.1/src/commands/export.ts)_
+_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.1.0-alpha.1/src/commands/export.ts)_
 
 ## `vibranium help [COMMAND]`
 
@@ -165,7 +165,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.1.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 <!-- commandsstop -->
 
 # 📣 Feedback
