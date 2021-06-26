@@ -17,13 +17,21 @@ interface Insets { top: number, bottom: number, left: number, right: number }
 export const CHROME_VARIATIONS = {
   CHROME: 0,
   CHROME_CANARY: 1,
-  CHROMIUM: 2
+  CHROMIUM: 2,
+  EDGE: 3,
+  EDGE_BETA: 4,
+  EDGE_DEV: 5,
+  EDGE_CANARY: 6
 }
 export type ChromeVariations = typeof CHROME_VARIATIONS[keyof typeof CHROME_VARIATIONS]
 const BROWSER_PROCESS_NAME = [
   'Google Chrome',
   'Google Chrome Canary',
-  'Chromium'
+  'Chromium',
+  'Microsoft Edge',
+  'Microsoft Edge Beta',
+  'Microsoft Edge Dev',
+  'Microsoft Edge Canary'
 ]
 
 export interface CustomEmulatedDevice {
@@ -101,6 +109,10 @@ export class ChromePreference {
     if (str === 'chromium') { return CHROME_VARIATIONS.CHROMIUM }
     if (str === 'chromecanary') { return CHROME_VARIATIONS.CHROME_CANARY }
     if (str === 'chrome') { return CHROME_VARIATIONS.CHROME }
+    if (str === 'edge') { return CHROME_VARIATIONS.EDGE }
+    if (str === 'edgebeta') { return CHROME_VARIATIONS.EDGE_BETA }
+    if (str === 'edgecanary') { return CHROME_VARIATIONS.EDGE_CANARY }
+    if (str === 'edgedev') { return CHROME_VARIATIONS.EDGE_DEV }
     return CHROME_VARIATIONS.CHROME
   }
 
