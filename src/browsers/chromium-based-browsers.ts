@@ -104,6 +104,11 @@ export class ChromePreference {
     return []
   }
 
+  getBrowserName (name: string = ''): string {
+    const index: ChromeVariations = this.getBrowser(name);
+    return BROWSER_PROCESS_NAME[index];
+  }
+
   getBrowser (name: string = ''): ChromeVariations {
     const str = name.toLowerCase().replace(/\s|-|_/g, '').replace('google', '').replace(/^(_)/, '')
     if (str === 'chromium') { return CHROME_VARIATIONS.CHROMIUM }

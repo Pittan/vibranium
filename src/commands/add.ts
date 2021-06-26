@@ -37,7 +37,8 @@ export default class Add extends Command {
     const browserPreference = new ChromePreference()
     const isLaunching = await browserPreference.isLaunching(flags.browser)
     if (isLaunching && !flags.force) {
-      this.error('Chrome must be closed. use --force to run anyway.')
+      const browserName = browserPreference.getBrowserName(flags.browser)
+      this.error(`${browserName} must be closed. use --force to run anyway.`)
       return
     }
 
