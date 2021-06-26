@@ -2,7 +2,7 @@ import { Command, flags } from '@oclif/command'
 import {
   ChromePreference,
   CustomEmulatedDevice
-} from '../browsers/google-chrome'
+} from '../browsers/chromium-based-browsers'
 import {
   chooseProfile,
   openJson
@@ -15,7 +15,7 @@ export default class Add extends Command {
   static flags = {
     help: flags.help({ char: 'h' }),
     force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
-    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium)', default: 'chrome' }),
+    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)', default: 'chrome' }),
     replace: flags.boolean({ char: 'r', description: 'Replace all your existing emulated devices inside Chrome.' }),
   }
 
@@ -37,7 +37,8 @@ export default class Add extends Command {
     const browserPreference = new ChromePreference()
     const isLaunching = await browserPreference.isLaunching(flags.browser)
     if (isLaunching && !flags.force) {
-      this.error('Chrome must be closed. use --force to run anyway.')
+      const browserName = browserPreference.getBrowserName(flags.browser)
+      this.error(`${browserName} must be closed. use --force to run anyway.`)
       return
     }
 

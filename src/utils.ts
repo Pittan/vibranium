@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import {
   ChromeProfile,
   CustomEmulatedDevice
-} from './browsers/google-chrome'
+} from './browsers/chromium-based-browsers'
 import inquirer from 'inquirer'
 import beautify from 'json-beautify'
 import * as Path from 'path'

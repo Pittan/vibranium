@@ -1,7 +1,7 @@
 import { Command, flags } from '@oclif/command'
 import {
   ChromePreference,
-} from '../browsers/google-chrome'
+} from '../browsers/chromium-based-browsers'
 import {
   chooseProfile,
   getValidPath,
@@ -24,12 +24,12 @@ import {
  * ```
  */
 export default class Export extends Command {
-  static description = 'Export custom virtual device list from your Chrome browser.'
+  static description = 'Export custom virtual device list from your Chromium-based browser.'
 
   static flags = {
     help: flags.help({ char: 'h' }),
     force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
-    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium)', default: 'chrome' })
+    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)', default: 'chrome' })
   }
 
   static examples = [
