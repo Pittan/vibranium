@@ -46,7 +46,7 @@ export interface CustomEmulatedDevice {
   }
   modes: Array<{
     title: string
-    orientation: 'vertical' | 'hotizontal'
+    orientation: 'vertical' | 'horizontal'
     insets: Insets
   }>
   'show-by-default': boolean
