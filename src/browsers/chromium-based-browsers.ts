@@ -56,7 +56,8 @@ export interface CustomEmulatedDevice {
 interface GoogleChromeConfig {
   devtools: {
     preferences: {
-      customEmulatedDeviceList: string // JSON
+      customEmulatedDeviceList?: string // JSON (Old Chrome)
+      "custom-emulated-device-list"?: string // JSON (New Chrome)
     }
   }
 }
@@ -122,8 +123,9 @@ export class ChromePreference {
   }
 
   getCustomEmulatedDeviceList (config: GoogleChromeConfig): CustomEmulatedDevice[] {
+    const deviceList = config?.devtools?.preferences?.["custom-emulated-device-list"] || '[]';
     try {
-      return JSON.parse(config?.devtools?.preferences?.customEmulatedDeviceList)
+      return JSON.parse(deviceList)
     } catch {
       return []
     }
@@ -131,7 +133,7 @@ export class ChromePreference {
 
   setCustomEmulatedDeviceList (config: GoogleChromeConfig, list: CustomEmulatedDevice[] = []): GoogleChromeConfig {
     const newConfig = { ...config }
-    newConfig.devtools.preferences.customEmulatedDeviceList = JSON.stringify(list)
+    newConfig.devtools.preferences["custom-emulated-device-list"] = JSON.stringify(list)
     return newConfig
   }
 }
