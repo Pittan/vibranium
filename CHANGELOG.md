@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/Pittan/vibranium/compare/v1.1.0...v1.1.1) (2024-11-23)
+
+
+### Bug Fixes
+
+* Not working with current chrome ([e174f70](https://github.com/Pittan/vibranium/commit/e174f70752712fe1ebcde9e57726fa34d721f477))
+
 ## [1.1.0](https://github.com/Pittan/vibranium/compare/v1.1.0-alpha.1...v1.1.0) (2021-06-26)
 
 ## [1.1.0-alpha.1](https://github.com/Pittan/vibranium/compare/v1.1.0-alpha.0...v1.1.0-alpha.1) (2021-06-26)
