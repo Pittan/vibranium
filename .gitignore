@@ -1,8 +1,49 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+lib/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# OCLIF
+oclif.manifest.json
+
+# Logs
+*.log
 *-debug.log
 *-error.log
-/.nyc_output
-/dist
-/lib
-/tmp
-node_modules
-/.idea
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Package manager files
+.pnpm-store/
+.yarn/
