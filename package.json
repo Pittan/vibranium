@@ -1,74 +1,76 @@
 {
   "name": "@pittankopta/vibranium",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "CLI for managing custom emulated devices on Chromium-based browsers.",
+  "type": "module",
   "author": "Pittan @Pittan",
-  "bin": {
-    "vibranium": "./bin/run"
-  },
+  "license": "MIT",
+  "homepage": "https://github.com/Pittan/vibranium",
+  "repository": "Pittan/vibranium",
   "bugs": "https://github.com/Pittan/vibranium/issues",
-  "dependencies": {
-    "@oclif/command": "^1",
-    "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
-    "chromium-profile-list": "^1.2.1",
-    "find-process": "^1.4.3",
-    "inquirer": "^7.1.0",
-    "json-beautify": "^1.1.1",
-    "tslib": "^1"
-  },
-  "devDependencies": {
-    "@oclif/dev-cli": "^1",
-    "@oclif/test": "^1",
-    "@types/chai": "^4",
-    "@types/inquirer": "^6.5.0",
-    "@types/mocha": "^5",
-    "@types/node": "^10",
-    "@typescript-eslint/eslint-plugin": "3",
-    "chai": "^4",
-    "eslint": "7",
-    "eslint-config-standard-with-typescript": "^18.0.2",
-    "eslint-plugin-import": "2",
-    "eslint-plugin-node": "11",
-    "eslint-plugin-promise": "4",
-    "eslint-plugin-standard": "4",
-    "globby": "^10",
-    "mocha": "8",
-    "nyc": "^14",
-    "standard-version": "^9.3.0",
-    "ts-node": "^8",
-    "typescript": "^3.3"
-  },
+  "keywords": [
+    "oclif",
+    "chrome",
+    "devtools",
+    "emulator",
+    "cli"
+  ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=18.0.0"
   },
+  "bin": {
+    "vibranium": "./bin/run.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "/bin",
-    "/lib",
-    "/npm-shrinkwrap.json",
+    "/dist",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/Pittan/vibranium",
-  "keywords": [
-    "oclif"
-  ],
-  "license": "MIT",
-  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist oclif.manifest.json",
+    "dev": "tsup --watch",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepack": "pnpm run clean && pnpm run build && oclif manifest",
+    "postpack": "rm -f oclif.manifest.json",
+    "version": "oclif readme && git add README.md",
+    "release": "pnpm run build && pnpm run test && standard-version"
+  },
+  "dependencies": {
+    "@oclif/core": "^4.0.27",
+    "@oclif/plugin-help": "^6.2.16",
+    "chromium-profile-list": "^1.2.1",
+    "find-process": "^1.4.10",
+    "inquirer": "^12.2.0"
+  },
+  "devDependencies": {
+    "@types/find-process": "^1.2.6",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "@vitest/coverage-v8": "^2.1.5",
+    "eslint": "^9.15.0",
+    "globals": "^15.12.0",
+    "oclif": "^4.15.17",
+    "standard-version": "^9.5.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.5"
+  },
   "oclif": {
-    "commands": "./lib/commands",
     "bin": "vibranium",
+    "dirname": "vibranium",
+    "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help"
-    ]
-  },
-  "repository": "Pittan/vibranium",
-  "scripts": {
-    "postpack": "rm -f oclif.manifest.json",
-    "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md",
-    "release": "standard-version"
-  },
-  "types": "lib/index.d.ts"
+    ],
+    "topicSeparator": " ",
+    "topics": {}
+  }
 }

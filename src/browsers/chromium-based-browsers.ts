@@ -1,139 +1,169 @@
-// @ts-expect-error
-import ChromeProfiles from 'chromium-profile-list'
-import { openJson, writeConfiguration } from '../utils'
-import * as Path from 'path'
-import find from 'find-process'
+import { homedir, platform } from 'node:os'
+import { join } from 'node:path'
+import { readFile, writeFile, copyFile } from 'node:fs/promises'
+import findProcess from 'find-process'
+import getProfileList from 'chromium-profile-list'
 
 export interface ChromeProfile {
-  displayName: string
-  profileDirName: string
   profileDirPath: string
-  profilePictureUrl: string
+  profileName: string
 }
 
-interface ScreenDimension { width: number, height: number }
-interface Insets { top: number, bottom: number, left: number, right: number }
-
-export const CHROME_VARIATIONS = {
-  CHROME: 0,
-  CHROME_CANARY: 1,
-  CHROMIUM: 2,
-  EDGE: 3,
-  EDGE_BETA: 4,
-  EDGE_DEV: 5,
-  EDGE_CANARY: 6
+export interface Viewport {
+  width: number
+  height: number
 }
-export type ChromeVariations = typeof CHROME_VARIATIONS[keyof typeof CHROME_VARIATIONS]
-const BROWSER_PROCESS_NAME = [
-  'Google Chrome',
-  'Google Chrome Canary',
-  'Chromium',
-  'Microsoft Edge',
-  'Microsoft Edge Beta',
-  'Microsoft Edge Dev',
-  'Microsoft Edge Canary'
-]
 
 export interface CustomEmulatedDevice {
   title: string
   type: string
   'user-agent': string
   capabilities: string[]
+  'show-by-default': boolean
   screen: {
     'device-pixel-ratio': number
-    vertical: ScreenDimension
-    horizontal: ScreenDimension
+    width: number
+    height: number
+    vertical?: Viewport
+    horizontal?: Viewport
   }
   modes: Array<{
     title: string
-    orientation: 'vertical' | 'horizontal'
-    insets: Insets
+    orientation: string
+    insets?: {
+      left: number
+      top: number
+      right: number
+      bottom: number
+    }
+    image?: string
   }>
-  'show-by-default': boolean
-  show: string
+  'dual-screen'?: string
+  'show-by-default'?: boolean
 }
 
-interface GoogleChromeConfig {
-  devtools: {
-    preferences: {
-      customEmulatedDeviceList?: string // JSON (Old Chrome)
-      "custom-emulated-device-list"?: string // JSON (New Chrome)
+interface ChromePreferences {
+  devtools?: {
+    preferences?: {
+      customEmulatedDeviceList?: string
+      'custom-emulated-device-list'?: string
+      [key: string]: unknown
     }
   }
+  [key: string]: unknown
+}
+
+type BrowserName = 'chrome' | 'chrome-canary' | 'chromium' | 'edge' | 'edge-beta' | 'edge-dev' | 'edge-canary'
+
+const BROWSER_PROCESS_NAMES: Record<BrowserName, string[]> = {
+  chrome: ['Google Chrome', 'chrome.exe', 'google-chrome'],
+  'chrome-canary': ['Google Chrome Canary', 'chrome.exe'],
+  chromium: ['Chromium', 'chromium.exe', 'chromium-browser', 'chromium'],
+  edge: ['Microsoft Edge', 'msedge.exe'],
+  'edge-beta': ['Microsoft Edge Beta', 'msedge.exe'],
+  'edge-dev': ['Microsoft Edge Dev', 'msedge.exe'],
+  'edge-canary': ['Microsoft Edge Canary', 'msedge.exe']
+}
+
+const BROWSER_DISPLAY_NAMES: Record<BrowserName, string> = {
+  chrome: 'Google Chrome',
+  'chrome-canary': 'Google Chrome Canary',
+  chromium: 'Chromium',
+  edge: 'Microsoft Edge',
+  'edge-beta': 'Microsoft Edge Beta',
+  'edge-dev': 'Microsoft Edge Dev',
+  'edge-canary': 'Microsoft Edge Canary'
 }
 
 export class ChromePreference {
-  async openConfiguration (path: string): Promise<GoogleChromeConfig> {
-    const preferencePath = Path.join(path, 'Preferences')
-    return await openJson<GoogleChromeConfig>(preferencePath).then(async (data) => {
-      if (!data.devtools) {
-        throw Error('You have to open DevTools at least once.')
-      }
-      const backupFilePath = `${path}.backup`
-      await writeConfiguration(data, backupFilePath)
-      return data
-    })
+  async openConfiguration(profileDirPath: string): Promise<ChromePreferences> {
+    const preferencePath = join(profileDirPath, 'Preferences')
+    const data = await readFile(preferencePath, 'utf-8')
+    return JSON.parse(data) as ChromePreferences
   }
 
-  async saveConfiguration (config: GoogleChromeConfig, path: string): Promise<void> {
-    const preferencePath = Path.join(path, 'Preferences')
-    return await writeConfiguration(config, preferencePath)
+  async saveConfiguration(
+    profileDirPath: string,
+    configuration: ChromePreferences
+  ): Promise<void> {
+    const preferencePath = join(profileDirPath, 'Preferences')
+    const backupPath = join(profileDirPath, 'Preferences.bak')
+    
+    // Create backup
+    await copyFile(preferencePath, backupPath)
+    
+    // Save new configuration
+    const data = JSON.stringify(configuration, null, 2)
+    await writeFile(preferencePath, data, 'utf-8')
   }
 
-  async isLaunching (name: string = ''): Promise<boolean> {
-    const browser = this.getBrowser(name)
-    const processName = BROWSER_PROCESS_NAME[browser]
-    return await new Promise(resolve => {
-      find('name', processName)
-        .then((list: any[]) => {
-          resolve(list.filter(i => i.name === processName).length > 0)
-        }, (err: any) => {
-          throw new Error(err)
-        })
-    })
-  }
-
-  getProfileList (name: string = ''): ChromeProfile[] {
-    const browser = this.getBrowser(name)
+  getCustomEmulatedDeviceList(configuration: ChromePreferences): CustomEmulatedDevice[] {
+    const preferences = configuration.devtools?.preferences
+    if (!preferences) return []
+    
+    // Try both old and new key names
+    const devicesString = preferences.customEmulatedDeviceList || 
+                         preferences['custom-emulated-device-list']
+    
+    if (!devicesString) return []
+    
     try {
-      return ChromeProfiles(browser)
-    } catch (e) {
-      if (e.code === 'ENOENT') {
-        throw Error('The browser is not installed!')
-      }
-    }
-    return []
-  }
-
-  getBrowserName (name: string = ''): string {
-    const index: ChromeVariations = this.getBrowser(name);
-    return BROWSER_PROCESS_NAME[index];
-  }
-
-  getBrowser (name: string = ''): ChromeVariations {
-    const str = name.toLowerCase().replace(/\s|-|_/g, '').replace('google', '').replace(/^(_)/, '')
-    if (str === 'chromium') { return CHROME_VARIATIONS.CHROMIUM }
-    if (str === 'chromecanary') { return CHROME_VARIATIONS.CHROME_CANARY }
-    if (str === 'chrome') { return CHROME_VARIATIONS.CHROME }
-    if (str === 'edge') { return CHROME_VARIATIONS.EDGE }
-    if (str === 'edgebeta') { return CHROME_VARIATIONS.EDGE_BETA }
-    if (str === 'edgecanary') { return CHROME_VARIATIONS.EDGE_CANARY }
-    if (str === 'edgedev') { return CHROME_VARIATIONS.EDGE_DEV }
-    return CHROME_VARIATIONS.CHROME
-  }
-
-  getCustomEmulatedDeviceList (config: GoogleChromeConfig): CustomEmulatedDevice[] {
-    const deviceList = config?.devtools?.preferences?.["custom-emulated-device-list"] || '[]';
-    try {
-      return JSON.parse(deviceList)
+      return JSON.parse(devicesString) as CustomEmulatedDevice[]
     } catch {
       return []
     }
   }
 
-  setCustomEmulatedDeviceList (config: GoogleChromeConfig, list: CustomEmulatedDevice[] = []): GoogleChromeConfig {
-    const newConfig = { ...config }
-    newConfig.devtools.preferences["custom-emulated-device-list"] = JSON.stringify(list)
-    return newConfig
+  updateCustomEmulatedDeviceList(
+    configuration: ChromePreferences,
+    devices: CustomEmulatedDevice[]
+  ): ChromePreferences {
+    // Ensure nested structure exists
+    if (!configuration.devtools) {
+      configuration.devtools = {}
+    }
+    if (!configuration.devtools.preferences) {
+      configuration.devtools.preferences = {}
+    }
+    
+    const devicesString = JSON.stringify(devices)
+    
+    // Update both old and new key names for compatibility
+    configuration.devtools.preferences.customEmulatedDeviceList = devicesString
+    configuration.devtools.preferences['custom-emulated-device-list'] = devicesString
+    
+    return configuration
+  }
+
+  async isLaunching(browserName: string): Promise<boolean> {
+    const processNames = BROWSER_PROCESS_NAMES[browserName as BrowserName]
+    if (!processNames) {
+      throw new Error(`Unknown browser: ${browserName}`)
+    }
+    
+    for (const processName of processNames) {
+      const processes = await findProcess('name', processName)
+      if (processes.length > 0) {
+        return true
+      }
+    }
+    
+    return false
+  }
+
+  getBrowserName(browserName: string): string {
+    return BROWSER_DISPLAY_NAMES[browserName as BrowserName] || browserName
+  }
+
+  getProfileList(browserName: string): ChromeProfile[] {
+    const profiles = getProfileList(browserName) as Array<{
+      ProfilePath: string
+      Name: string
+    }>
+    
+    return profiles.map(profile => ({
+      profileDirPath: profile.ProfilePath,
+      profileName: profile.Name || 'Default'
+    }))
   }
 }

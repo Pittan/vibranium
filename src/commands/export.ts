@@ -1,58 +1,80 @@
-import { Command, flags } from '@oclif/command'
+import { Command, Flags } from '@oclif/core'
 import {
-  ChromePreference,
-} from '../browsers/chromium-based-browsers'
+  ChromePreference
+} from '../browsers/chromium-based-browsers.js'
 import {
   chooseProfile,
   getValidPath,
   writeVibraniumPreferences
-} from '../utils'
+} from '../utils.js'
 
-/**
- * # export
- *
- * ```
- * # This will export vibranium.json to your current directory.
- * $ vibranium export
- *
- * # You can set a custom name for the configuration file.
- * # It will exported as my-configuration.json to your current directory.
- * $ vibranium export my-configuration.json
- *
- * # Or you can pass a full path
- * $ vibranium export ~/path/to/my/config.json
- * ```
- */
 export default class Export extends Command {
-  static description = 'Export custom virtual device list from your Chromium-based browser.'
+  static override description = 'Export custom virtual device list from your Chromium-based browser.'
 
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
-    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)', default: 'chrome' })
+  static override flags = {
+    help: Flags.help({ char: 'h' }),
+    force: Flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
+    browser: Flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)', default: 'chrome' }),
   }
 
-  static examples = [
-    `- To export your custom emulated device settings, simply type:
-    $ vibranium export`,
-    `- You can specify a directory/name for the output file with:
-    $ vibranium export ./path/to/the/config.json`,
-    `- If you want to export settings from Chrome Canary, type:
-    $ vibranium export --browser chrome-canary`
+  static override examples = [
+    {
+      description: 'To export your custom emulated device settings, simply type:',
+      command: '<%= config.bin %> <%= command.id %>'
+    },
+    {
+      description: 'You can specify a directory/name for the output file:',
+      command: '<%= config.bin %> <%= command.id %> ./path/to/the/config.json'
+    },
+    {
+      description: 'To export settings from Chrome Canary:',
+      command: '<%= config.bin %> <%= command.id %> --browser chrome-canary'
+    }
   ]
 
-  static args = [{ name: 'file' }]
+  static override args = {
+    file: {
+      name: 'file',
+      required: false,
+      description: 'Output file path (defaults to vibranium.json)'
+    }
+  }
 
-  async run (): Promise<void> {
-    const { args, flags } = this.parse(Export)
+  async run(): Promise<void> {
+    const { args, flags } = await this.parse(Export)
+
     const browserPreference = new ChromePreference()
+    const isLaunching = await browserPreference.isLaunching(flags.browser)
+    
+    if (isLaunching && !flags.force) {
+      const browserName = browserPreference.getBrowserName(flags.browser)
+      this.log(`⚠️   ${browserName} is currently running. For best results, close it first.`)
+      this.log('    Use --force to export anyway (may not capture latest changes).')
+    }
+
     const profiles = browserPreference.getProfileList(flags.browser)
-    const profile = await chooseProfile(profiles, 'export')
+    const profile = await chooseProfile(profiles, 'export device(s) from')
     const configuration = await browserPreference.openConfiguration(profile.profileDirPath)
     const devices = browserPreference.getCustomEmulatedDeviceList(configuration)
-    const filepath = await getValidPath(args.file)
-    const result = await writeVibraniumPreferences(devices, filepath, flags.force)
-    if (!result) { return }
-    this.log(`Custom emulated device list successfully exported on ${filepath}`)
+
+    if (devices.length === 0) {
+      this.log('❌  No custom emulated devices found in this profile.')
+      return
+    }
+
+    this.log(`📱  Found ${devices.length} custom emulated device(s)`)
+
+    const outputPath = getValidPath(args.file, 'vibranium.json')
+    
+    try {
+      await writeVibraniumPreferences(outputPath, devices, { force: flags.force })
+      this.log(`✨  Successfully exported to: ${outputPath}`)
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('cancelled')) {
+        this.log('❌  Export cancelled')
+      } else {
+        throw error
+      }
+    }
   }
 }

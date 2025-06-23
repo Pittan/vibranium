@@ -1,133 +1,120 @@
-import * as fs from 'fs'
-import {
-  ChromeProfile,
-  CustomEmulatedDevice
-} from './browsers/chromium-based-browsers'
+import { readFile, writeFile as fsWriteFile, access, constants, stat } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import inquirer from 'inquirer'
-import beautify from 'json-beautify'
-import * as Path from 'path'
+import type { ChromeProfile } from './browsers/chromium-based-browsers.js'
 
-export async function openJson<T> (path: string): Promise<T> {
-  return await new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, data) => {
-      if (err) { reject(err) }
-      try {
-        const preference = JSON.parse(data)
-        resolve(preference)
-      } catch (e) {
-        reject(e)
-      }
-    })
-  })
+export async function openJson<T>(path: string): Promise<T> {
+  try {
+    const data = await readFile(path, 'utf-8')
+    return JSON.parse(data) as T
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to read JSON file: ${error.message}`)
+    }
+    throw error
+  }
 }
 
-export async function writeConfiguration<T> (config: T, path: string): Promise<void> {
-  return await new Promise((resolve, reject) => {
-    fs.writeFile(path, JSON.stringify(config), err => {
-      if (err) { reject(err) }
-      resolve()
-    })
-  })
+export async function writeConfiguration<T>(
+  path: string,
+  configuration: T
+): Promise<void> {
+  const data = JSON.stringify(configuration)
+  await fsWriteFile(path, data, 'utf-8')
 }
 
-async function writeFile (path: string, data: any, force?: boolean): Promise<boolean> {
-  const isExisting = await isFileExisting(path)
-  return await new Promise((resolve, reject) => {
-    if (isExisting && !force) {
-      // prompt
-      return inquirer.prompt([{
+export async function isFileExisting(path: string): Promise<boolean> {
+  try {
+    await access(path, constants.F_OK)
+    return true
+  } catch {
+    return false
+  }
+}
+
+export async function isDirectory(path: string): Promise<boolean> {
+  try {
+    const stats = await stat(path)
+    return stats.isDirectory()
+  } catch {
+    return false
+  }
+}
+
+export function getValidPath(path: string | undefined, defaultPath: string): string {
+  return path || defaultPath
+}
+
+export async function writeFile(
+  path: string,
+  data: string,
+  options: { force?: boolean } = {}
+): Promise<void> {
+  const exists = await isFileExisting(path)
+  
+  if (exists && !options.force) {
+    const response = await inquirer.prompt<{ overwrite: boolean }>([
+      {
         type: 'confirm',
         name: 'overwrite',
-        message: `${path} is already existing. Overwrite?`,
+        message: `File ${path} already exists. Overwrite?`,
         default: false
-      }]).then((answer: { overwrite: boolean }) => {
-        if (!answer.overwrite) {
-          resolve(false)
-          return
-        }
-        fs.writeFile(path, data, err => {
-          if (err) {
-            reject(err)
-            return
-          }
-          resolve(true)
-        })
-      })
+      }
+    ])
+    
+    if (!response.overwrite) {
+      throw new Error('File write cancelled by user')
     }
-    fs.writeFile(path, data, err => {
-      if (err) {
-        reject(err)
-        return
-      }
-      resolve(true)
-    })
-  })
-}
-
-async function isFileExisting (path: string): Promise<boolean> {
-  return await new Promise((resolve, reject) => {
-    fs.stat(path, (err, stats) => {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          resolve(false)
-          return
-        }
-        reject(err)
-        return
-      }
-      if (stats.isDirectory()) {
-        reject(new Error('Path is a directory'))
-        return
-      }
-      // is a file (override)
-      resolve(true)
-    })
-  })
-}
-
-const DEFAULT_FILE_NAME = 'vibranium.json'
-export async function getValidPath (path?: string): Promise<string> {
-  return await new Promise((resolve, reject) => {
-    if (!path) {
-      resolve(Path.join(process.cwd(), DEFAULT_FILE_NAME))
-      return
-    }
-
-    fs.stat(path, (err, stats) => {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          resolve(path)
-          return
-        }
-        reject(err)
-        return
-      }
-      if (stats.isDirectory()) {
-        // is directory
-        resolve(Path.join(path, DEFAULT_FILE_NAME))
-        return
-      }
-      // is a file (override)
-      resolve(path)
-    })
-  })
-}
-
-export async function writeVibraniumPreferences (config: CustomEmulatedDevice[], path: string, force?: boolean): Promise<boolean> {
-  // @ts-expect-error
-  return await writeFile(path, beautify(config, null, 2, 100), force)
-}
-
-export async function chooseProfile (profiles: ChromeProfile[], action: string): Promise<ChromeProfile> {
-  if (profiles.length === 1) {
-    return profiles[0]
   }
-  return inquirer.prompt([{
-    type: 'list',
-    name: 'profile',
-    message: `Choose a profile you want to ${action}.`,
-    choices: profiles.map(p => p.displayName)
-  }]).then((answer: { profile: string }) => {
-    return profiles.find(p => p.displayName === answer.profile) ?? profiles[0]
-  })
+  
+  const dir = dirname(path)
+  const dirExists = await isDirectory(dir)
+  
+  if (!dirExists) {
+    throw new Error(`Directory ${dir} does not exist`)
+  }
+  
+  await fsWriteFile(path, data, 'utf-8')
+}
+
+export async function writeVibraniumPreferences<T>(
+  path: string,
+  data: T,
+  options: { force?: boolean } = {}
+): Promise<void> {
+  const formatted = JSON.stringify(data, null, 2)
+  await writeFile(path, formatted, options)
+}
+
+export async function chooseProfile(
+  profiles: ChromeProfile[],
+  action: string
+): Promise<ChromeProfile> {
+  if (profiles.length === 0) {
+    throw new Error('No Chrome profiles found')
+  }
+  
+  if (profiles.length === 1) {
+    const profile = profiles[0]
+    if (!profile) {
+      throw new Error('Invalid profile data')
+    }
+    return profile
+  }
+  
+  const choices = profiles.map(profile => ({
+    name: profile.profileName,
+    value: profile
+  }))
+  
+  const response = await inquirer.prompt<{ profile: ChromeProfile }>([
+    {
+      type: 'list',
+      name: 'profile',
+      message: `Which profile do you want to ${action}?`,
+      choices
+    }
+  ])
+  
+  return response.profile
 }
