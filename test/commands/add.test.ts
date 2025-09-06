@@ -1,17 +1,14 @@
-import {expect, test} from '@oclif/test'
+import {runCommand} from '@oclif/test'
+import {expect} from 'chai'
 
 describe('add', () => {
-  test
-  .stdout()
-  .command(['add'])
-  .it('runs hello', ctx => {
-    expect(ctx.stdout).to.contain('hello world')
+  it('runs add cmd', async () => {
+    const {stdout} = await runCommand('add')
+    expect(stdout).to.contain('hello world')
   })
 
-  test
-  .stdout()
-  .command(['add', '--name', 'jeff'])
-  .it('runs hello --name jeff', ctx => {
-    expect(ctx.stdout).to.contain('hello jeff')
+  it('runs add --name oclif', async () => {
+    const {stdout} = await runCommand('add --name oclif')
+    expect(stdout).to.contain('hello oclif')
   })
 })

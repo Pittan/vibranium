@@ -1,58 +1,27 @@
-import { Command, flags } from '@oclif/command'
-import {
-  ChromePreference,
-} from '../browsers/chromium-based-browsers'
-import {
-  chooseProfile,
-  getValidPath,
-  writeVibraniumPreferences
-} from '../utils'
+import {Args, Command, Flags} from '@oclif/core'
 
-/**
- * # export
- *
- * ```
- * # This will export vibranium.json to your current directory.
- * $ vibranium export
- *
- * # You can set a custom name for the configuration file.
- * # It will exported as my-configuration.json to your current directory.
- * $ vibranium export my-configuration.json
- *
- * # Or you can pass a full path
- * $ vibranium export ~/path/to/my/config.json
- * ```
- */
 export default class Export extends Command {
-  static description = 'Export custom virtual device list from your Chromium-based browser.'
-
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
-    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)', default: 'chrome' })
+  static override args = {
+    file: Args.string({description: 'file to read'}),
+  }
+  static override description = 'describe the command here'
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+  ]
+  static override flags = {
+    // flag with no value (-f, --force)
+    force: Flags.boolean({char: 'f'}),
+    // flag with a value (-n, --name=VALUE)
+    name: Flags.string({char: 'n', description: 'name to print'}),
   }
 
-  static examples = [
-    `- To export your custom emulated device settings, simply type:
-    $ vibranium export`,
-    `- You can specify a directory/name for the output file with:
-    $ vibranium export ./path/to/the/config.json`,
-    `- If you want to export settings from Chrome Canary, type:
-    $ vibranium export --browser chrome-canary`
-  ]
+  public async run(): Promise<void> {
+    const {args, flags} = await this.parse(Export)
 
-  static args = [{ name: 'file' }]
-
-  async run (): Promise<void> {
-    const { args, flags } = this.parse(Export)
-    const browserPreference = new ChromePreference()
-    const profiles = browserPreference.getProfileList(flags.browser)
-    const profile = await chooseProfile(profiles, 'export')
-    const configuration = await browserPreference.openConfiguration(profile.profileDirPath)
-    const devices = browserPreference.getCustomEmulatedDeviceList(configuration)
-    const filepath = await getValidPath(args.file)
-    const result = await writeVibraniumPreferences(devices, filepath, flags.force)
-    if (!result) { return }
-    this.log(`Custom emulated device list successfully exported on ${filepath}`)
+    const name = flags.name ?? 'world'
+    this.log(`hello ${name} from /Users/pittan/Dev/vibranium-v2/src/commands/export.ts`)
+    if (args.file && flags.force) {
+      this.log(`you input --force and --file: ${args.file}`)
+    }
   }
 }
