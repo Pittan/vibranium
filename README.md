@@ -106,25 +106,30 @@ Add custom emulated devices from a JSON config file.
 
 ```
 USAGE
-  $ vibranium add FILE
+  $ vibranium add FILE [-b <value>] [-f] [-h] [-r]
 
-OPTIONS
-  -b, --browser=browser  [default: chrome] Specify a browser (e.g. chrome-canary, chromium, edge)
+FLAGS
+  -b, --browser=<value>  [default: chrome] Specify a browser (e.g. chrome-canary, chromium, edge)
   -f, --force            Skip confirm when overwriting
-  -h, --help             show CLI help
+  -h, --help             Show CLI help.
   -r, --replace          Replace all your existing emulated devices inside Chrome.
+
+DESCRIPTION
+  Add custom emulated devices from a JSON config file.
 
 EXAMPLES
   - To add a custom device to your browser, simply type:
-       $ vibranium add vibranium.json
-       $ vibranium add path/to/the/config.json
+      $ vibranium add vibranium.json
+      $ vibranium add path/to/the/config.json
+
   - If you want to swap all the devices with your config, type:
-       $ vibranium add vibranium.json --replace
+      $ vibranium add vibranium.json --replace
+
   - If you want to add settings to Chrome Canary, type:
-       $ vibranium add --browser chrome-canary
+      $ vibranium add --browser chrome-canary
 ```
 
-_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v1.1.0/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v2.0.0-alpha.0/src/commands/add.ts)_
 
 ## `vibranium export [FILE]`
 
@@ -132,40 +137,48 @@ Export custom virtual device list from your Chromium-based browser.
 
 ```
 USAGE
-  $ vibranium export [FILE]
+  $ vibranium export [FILE] [-b <value>] [-f] [-h]
 
-OPTIONS
-  -b, --browser=browser  [default: chrome] Specify a browser (e.g. chrome-canary, chromium, edge)
+FLAGS
+  -b, --browser=<value>  [default: chrome] Specify a browser (e.g. chrome-canary, chromium, edge)
   -f, --force            Skip confirm when overwriting
-  -h, --help             show CLI help
+  -h, --help             Show CLI help.
+
+DESCRIPTION
+  Export custom virtual device list from your Chromium-based browser.
 
 EXAMPLES
   - To export your custom emulated device settings, simply type:
-       $ vibranium export
+      $ vibranium export
+
   - You can specify a directory/name for the output file with:
-       $ vibranium export ./path/to/the/config.json
+      $ vibranium export ./path/to/the/config.json
+
   - If you want to export settings from Chrome Canary, type:
-       $ vibranium export --browser chrome-canary
+      $ vibranium export --browser chrome-canary
 ```
 
-_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v1.1.0/src/commands/export.ts)_
+_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v2.0.0-alpha.0/src/commands/export.ts)_
 
 ## `vibranium help [COMMAND]`
 
-display help for vibranium
+Display help for vibranium.
 
 ```
 USAGE
-  $ vibranium help [COMMAND]
+  $ vibranium help [COMMAND...] [-n]
 
 ARGUMENTS
-  COMMAND  command to show help for
+  COMMAND...  Command to show help for.
 
-OPTIONS
-  --all  see all commands in CLI
+FLAGS
+  -n, --nested-commands  Include all nested commands in the output.
+
+DESCRIPTION
+  Display help for vibranium.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.32/src/commands/help.ts)_
 <!-- commandsstop -->
 
 # 📣 Feedback

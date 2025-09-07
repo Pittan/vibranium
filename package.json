@@ -11,7 +11,6 @@
     "@inquirer/prompts": "^7.8.4",
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
-    "@oclif/plugin-plugins": "^5",
     "find-process": "^2.0.0",
     "json-beautify": "^1.1.1"
   },
@@ -52,15 +51,9 @@
     "dirname": "vibranium",
     "commands": "./dist/commands",
     "plugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
+      "@oclif/plugin-help"
     ],
-    "topicSeparator": " ",
-    "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
-      }
-    }
+    "topicSeparator": " "
   },
   "repository": "Pittan/vibranium",
   "scripts": {
