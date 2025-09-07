@@ -1,25 +1,21 @@
-import { Command, flags } from '@oclif/command'
+import { confirm } from '@inquirer/prompts'
+import {Args, Command, Flags} from '@oclif/core'
+
 import {
   ChromePreference,
   CustomEmulatedDevice
-} from '../browsers/chromium-based-browsers'
+} from '../utils/chromium-based-browsers.js'
 import {
   chooseProfile,
   openJson
-} from '../utils'
-import inquirer from 'inquirer'
+} from '../utils/index.js'
 
 export default class Add extends Command {
-  static description = 'Add custom emulated devices from a JSON config file.'
-
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    force: flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
-    browser: flags.string({ char: 'b', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)', default: 'chrome' }),
-    replace: flags.boolean({ char: 'r', description: 'Replace all your existing emulated devices inside Chrome.' }),
+  static override args = {
+    file: Args.string({ name: 'file', required: true }),
   }
-
-  static examples = [
+  static override description = 'Add custom emulated devices from a JSON config file.'
+  static override examples = [
     `- To add a custom device to your browser, simply type:
     $ vibranium add vibranium.json
     $ vibranium add path/to/the/config.json`,
@@ -28,11 +24,15 @@ export default class Add extends Command {
     `- If you want to add settings to Chrome Canary, type:
     $ vibranium add --browser chrome-canary`
   ]
+  static override flags = {
+    browser: Flags.string({ char: 'b', default: 'chrome', description: 'Specify a browser (e.g. chrome-canary, chromium, edge)' }),
+    force: Flags.boolean({ char: 'f', description: 'Skip confirm when overwriting' }),
+    help: Flags.help({ char: 'h' }),
+    replace: Flags.boolean({ char: 'r', description: 'Replace all your existing emulated devices inside Chrome.' }),
+  }
 
-  static args = [{ name: 'file', required: true }]
-
-  async run (): Promise<void> {
-    const { args, flags } = this.parse(Add)
+  public async run(): Promise<void> {
+    const {args, flags} = await this.parse(Add)
 
     const browserPreference = new ChromePreference()
     const isLaunching = await browserPreference.isLaunching(flags.browser)
@@ -42,7 +42,7 @@ export default class Add extends Command {
       return
     }
 
-    const profiles = browserPreference.getProfileList(flags.browser)
+    const profiles = await browserPreference.getProfileList(flags.browser)
     const profile = await chooseProfile(profiles, 'add device(s)')
     const configuration = await browserPreference.openConfiguration(profile.profileDirPath)
     const currentDevices = browserPreference.getCustomEmulatedDeviceList(configuration)
@@ -50,23 +50,23 @@ export default class Add extends Command {
     let list: CustomEmulatedDevice[] = currentDevices
 
     if (flags.replace) {
-      const responses: any = await inquirer.prompt([{
-        name: 'confirm',
-        message: 'It will replace all of your custom emulated devices. Continue?',
-        type: 'confirm',
-        default: false
-      }])
-      if (!responses.confirm) {
+      const response = await confirm({
+        default: false,
+        message: 'It will replace all of your custom emulated devices. Continue?'
+      })
+      if (!response) {
         return
       }
+
       list = config
     } else {
-      config.forEach(c => {
+      for (const c of config) {
         list.push(c)
         this.log(`  -> Added: ${c.title}`)
-      })
+      }
     }
-    const newConfiguration = await browserPreference.setCustomEmulatedDeviceList(configuration, list)
+
+    const newConfiguration = browserPreference.setCustomEmulatedDeviceList(configuration, list)
     await browserPreference.saveConfiguration(newConfiguration, profile.profileDirPath)
   }
 }

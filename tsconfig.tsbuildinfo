@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/commands/add.ts","./src/commands/export.ts","./src/utils/chrome-profile.ts","./src/utils/chromium-based-browsers.ts","./src/utils/index.ts"],"version":"5.9.2"}

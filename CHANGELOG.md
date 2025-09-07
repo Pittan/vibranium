@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.0](https://github.com/Pittan/vibranium/compare/v1.1.1...v2.0.0) (2025-09-07)
+
+*Update Dependencies
+
 ### [1.1.1](https://github.com/Pittan/vibranium/compare/v1.1.0...v1.1.1) (2024-11-23)
 
 
