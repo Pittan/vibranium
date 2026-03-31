@@ -89,8 +89,13 @@ export class ChromePreference {
     async isLaunching (name: string = ''): Promise<boolean> {
         const browser = this.getBrowser(name)
         const processName = BROWSER_PROCESS_NAME[browser]
+        // find-process v2 exports via `exports.default` (CJS). Depending on the
+        // Node.js version, ESM importing CJS may give the module.exports object
+        // (find.default is the function) or unwrap __esModule and give the
+        // function directly. Handle both cases.
+        const findFn = find.default ?? (find as unknown as typeof find.default)
         return new Promise(resolve => {
-            find.default('name', processName)
+            findFn('name', processName)
                 .then((list: ProcessInfo[]) => {
                     resolve(list.some(i => i.name === processName))
                 }).catch((error: unknown) => {
