@@ -6,6 +6,10 @@
   "bin": {
     "vibranium": "./bin/run.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pittan/vibranium.git"
+  },
   "bugs": "https://github.com/Pittan/vibranium/issues",
   "dependencies": {
     "@inquirer/prompts": "7.10.1",
@@ -56,7 +60,6 @@
     ],
     "topicSeparator": " "
   },
-  "repository": "Pittan/vibranium",
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint",
