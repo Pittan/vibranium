@@ -10,16 +10,16 @@ Vibranium is a CLI tool for managing custom emulated devices on Chromium-based b
 
 ```bash
 # Build the project
-npm run build
+pnpm run build
 
 # Run tests
-npm test
+pnpm test
 
 # Lint the code
-npm run lint
+pnpm run lint
 
 # Run a single test file
-npx mocha test/commands/add.test.ts
+pnpm exec mocha test/commands/add.test.ts
 
 # Test the CLI locally
 ./bin/run.js <command>

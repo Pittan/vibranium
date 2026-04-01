@@ -8,7 +8,8 @@
     "target": "es2022",
     "moduleResolution": "node16",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["./src/**/*"],
   "ts-node": {
