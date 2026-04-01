@@ -27,4 +27,14 @@ jobs:
 
       - run: pnpm run build
 
-      - run: pnpm publish --no-git-checks --provenance --access public
+      - name: Set npm tag
+        id: npm_tag
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *"-"* ]]; then
+            echo "tag=alpha" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - run: pnpm publish --no-git-checks --provenance --access public --tag ${{ steps.npm_tag.outputs.tag }}
