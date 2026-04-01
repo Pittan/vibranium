@@ -8,28 +8,28 @@
   },
   "bugs": "https://github.com/Pittan/vibranium/issues",
   "dependencies": {
-    "@inquirer/prompts": "^7.8.4",
-    "@oclif/core": "^4",
-    "@oclif/plugin-help": "^6",
-    "find-process": "^2.0.0",
-    "json-beautify": "^1.1.1"
+    "@inquirer/prompts": "7.10.1",
+    "@oclif/core": "4.10.3",
+    "@oclif/plugin-help": "6.2.41",
+    "find-process": "2.0.0",
+    "json-beautify": "1.1.1"
   },
   "devDependencies": {
-    "@eslint/compat": "^1",
-    "@oclif/prettier-config": "^0.2.1",
-    "@oclif/test": "^4",
-    "@types/chai": "^4",
-    "@types/mocha": "^10",
-    "@types/node": "^18",
-    "chai": "^4",
-    "eslint": "^9",
-    "eslint-config-oclif": "^6",
-    "eslint-config-prettier": "^10",
-    "mocha": "^10",
-    "oclif": "^4",
-    "shx": "^0.3.3",
-    "ts-node": "^10",
-    "typescript": "^5"
+    "@eslint/compat": "1.4.1",
+    "@oclif/prettier-config": "0.2.1",
+    "@oclif/test": "4.1.17",
+    "@types/chai": "4.3.20",
+    "@types/mocha": "10.0.10",
+    "@types/node": "18.19.130",
+    "chai": "4.5.0",
+    "eslint": "9.39.4",
+    "eslint-config-oclif": "6.0.154",
+    "eslint-config-prettier": "10.1.8",
+    "mocha": "10.8.2",
+    "oclif": "4.22.96",
+    "shx": "0.3.4",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -44,6 +44,7 @@
     "oclif"
   ],
   "license": "MIT",
+  "packageManager": "pnpm@10.15.1",
   "main": "dist/index.js",
   "type": "module",
   "oclif": {
@@ -60,7 +61,7 @@
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint",
     "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "npm run lint",
+    "posttest": "pnpm run lint",
     "prepack": "oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"

@@ -129,7 +129,7 @@ EXAMPLES
       $ vibranium add --browser chrome-canary
 ```
 
-_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v2.0.0-alpha.0/src/commands/add.ts)_
+_See code: [src/commands/add.ts](https://github.com/Pittan/vibranium/blob/v2.0.0/src/commands/add.ts)_
 
 ## `vibranium export [FILE]`
 
@@ -158,7 +158,7 @@ EXAMPLES
       $ vibranium export --browser chrome-canary
 ```
 
-_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v2.0.0-alpha.0/src/commands/export.ts)_
+_See code: [src/commands/export.ts](https://github.com/Pittan/vibranium/blob/v2.0.0/src/commands/export.ts)_
 
 ## `vibranium help [COMMAND]`
 
